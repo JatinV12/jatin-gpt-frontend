@@ -146,15 +146,15 @@
 
           <!-- Retrieved Context Block (Only for RAG) -->
           <div id="contextBlock" class="mt-4 hidden">
-            <details class="group bg-slate-950/60 border border-slate-800/80 rounded-xl overflow-hidden">
+            <details class="group bg-slate-950/60 border border-slate-800/80 rounded-xl overflow-hidden" open>
               <summary class="px-4 py-2.5 text-xs font-mono text-slate-400 hover:text-slate-200 cursor-pointer flex items-center justify-between select-none">
                 <span class="flex items-center gap-1.5">
                   <i class="fa-solid fa-database text-indigo-400 text-[10px]"></i>
-                  Retrieved Resume Context (Lexical Overlap)
+                  Retrieved Ground Truth (Knowledge Base)
                 </span>
                 <i class="fa-solid fa-chevron-down text-[10px] transition group-open:rotate-180"></i>
               </summary>
-              <div id="contextText" class="px-4 pb-3.5 pt-1 text-xs text-slate-400 leading-relaxed font-mono border-t border-slate-800/40"></div>
+              <div id="contextText" class="px-4 pb-3.5 pt-1 text-xs text-slate-300 leading-relaxed font-mono border-t border-slate-800/40"></div>
             </details>
           </div>
         </div>
@@ -186,7 +186,7 @@
           <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/60">
             <span class="text-emerald-400 font-semibold block mb-1">3. Why RAG Mode Is Recommended</span>
             <span class="text-slate-400 font-sans leading-relaxed block">
-              RAG injects verified factual resume excerpts directly into the prompt. This anchors the 51M attention heads on real facts, compensating for the small model capacity and ensuring factual answers.
+              RAG injects verified factual domain excerpts directly into the prompt. This anchors the 51M attention heads on real facts, compensating for the small model capacity and ensuring factual grounding.
             </span>
           </div>
           <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/60">

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jatin's 51M GPT Model | Interactive Playground</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+          <i class="fa-solid fa-brain text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-base font-bold text-white flex items-center gap-2">
+            Jatin's 51M GPT Playground
+            <span class="text-[10px] uppercase tracking-wider font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded-full">nanoGPT + RAG</span>
+          </h1>
+          <p class="text-xs text-slate-400">Trained from scratch on 474M tokens • Lexical RAG • Pure CPU Inference</p>
+        </div>
+      </div>
+      
+      <!-- Connection Status Badge -->
+      <div class="flex items-center gap-3">
+        <div id="statusBadge" class="flex items-center gap-2 text-xs bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="statusText" class="text-slate-400">Connecting to Render backend...</span>
+        </div>
+        <a href="https://github.com/JatinV12/GPT-2-From-scratch" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+          <i class="fa-brands fa-github"></i> Source
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <!-- Left Column: Controls & Prompt Input (7 cols) -->
+    <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Suggested Prompt Chips -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-amber-400"></i> Interview Topics
+          </label>
+          <span class="text-[11px] text-slate-500">Click to load</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button onclick="setPrompt('Tell me about your work on the Connect AI Gateway failover.')" class="chip-btn text-left text-xs bg-slate-950 hover:bg-indigo-950/40 border border-slate-800 hover:border-indigo-500/50 p-2.5 rounded-xl transition text-slate-300">
+            <span class="font-medium text-indigo-400 block mb-0.5">🚀 AI Gateway Failover</span>
+            <span class="text-[11px] text-slate-500">K8s sync & 90% error cut</span>
+          </button>
+          <button onclick="setPrompt('How does the MCP File Transfer Service achieve zero token cost?')" class="chip-btn text-left text-xs bg-slate-950 hover:bg-indigo-950/40 border border-slate-800 hover:border-indigo-500/50 p-2.5 rounded-xl transition text-slate-300">
+            <span class="font-medium text-emerald-400 block mb-0.5">📦 MCP File Transfer</span>
+            <span class="text-[11px] text-slate-500">Azure Blob streaming (~0 tokens)</span>
+          </button>
+          <button onclick="setPrompt('Tell me about the 51M GPT model you built from scratch.')" class="chip-btn text-left text-xs bg-slate-950 hover:bg-indigo-950/40 border border-slate-800 hover:border-indigo-500/50 p-2.5 rounded-xl transition text-slate-300">
+            <span class="font-medium text-violet-400 block mb-0.5">🧠 51M GPT Pretraining</span>
+            <span class="text-[11px] text-slate-500">474M TinyStories tokens in PyTorch</span>
+          </button>
+          <button onclick="setPrompt('What was your role in validating the Semantic Context microservice?')" class="chip-btn text-left text-xs bg-slate-950 hover:bg-indigo-950/40 border border-slate-800 hover:border-indigo-500/50 p-2.5 rounded-xl transition text-slate-300">
+            <span class="font-medium text-sky-400 block mb-0.5">🔍 Semantic Context</span>
+            <span class="text-[11px] text-slate-500">53K-line Kotlin/Spring service</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Input Form -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+        <label for="promptInput" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+          Ask a Question About Jatin's Experience
+        </label>
+        <textarea id="promptInput" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition resize-none" placeholder="Type a technical question or select an interview topic above..."></textarea>
+        
+        <!-- Controls Grid -->
+        <div class="grid grid-cols-3 gap-3 pt-1">
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Temperature: <span id="tempVal" class="text-indigo-400">0.1</span></label>
+            <input type="range" id="tempInput" min="0.0" max="1.0" step="0.05" value="0.1" oninput="document.getElementById('tempVal').innerText=this.value" class="w-full accent-indigo-500">
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Top-k: <span id="topkVal" class="text-indigo-400">1</span></label>
+            <input type="range" id="topkInput" min="1" max="50" step="1" value="1" oninput="document.getElementById('topkVal').innerText=this.value" class="w-full accent-indigo-500">
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Max Tokens: <span id="tokensVal" class="text-indigo-400">45</span></label>
+            <input type="range" id="tokensInput" min="15" max="75" step="5" value="45" oninput="document.getElementById('tokensVal').innerText=this.value" class="w-full accent-indigo-500">
+          </div>
+        </div>
+
+        <button id="submitBtn" onclick="runInference()" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl text-sm transition shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2">
+          <span>Run Inference</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+      <!-- Architecture Specs Box -->
+      <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-4 text-xs text-slate-400 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+        <div class="bg-slate-950/50 p-2.5 rounded-xl border border-slate-800/60">
+          <div class="text-indigo-400 font-bold text-sm">51.05M</div>
+          <div class="text-[10px] text-slate-500">Total Params</div>
+        </div>
+        <div class="bg-slate-950/50 p-2.5 rounded-xl border border-slate-800/60">
+          <div class="text-indigo-400 font-bold text-sm">8 Layers</div>
+          <div class="text-[10px] text-slate-500">8 Heads (512 Dim)</div>
+        </div>
+        <div class="bg-slate-950/50 p-2.5 rounded-xl border border-slate-800/60">
+          <div class="text-indigo-400 font-bold text-sm">474M</div>
+          <div class="text-[10px] text-slate-500">Pretrain Tokens</div>
+        </div>
+        <div class="bg-slate-950/50 p-2.5 rounded-xl border border-slate-800/60">
+          <div class="text-indigo-400 font-bold text-sm">Lexical RAG</div>
+          <div class="text-[10px] text-slate-500">Zero Hallucination</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Model Output & Context Inspector (5 cols) -->
+    <div class="lg:col-span-5 space-y-6">
+      
+      <!-- Output Card -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-3 flex flex-col h-full min-h-[350px]">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-sparkles text-indigo-400"></i> Model Output
+          </span>
+          <span id="metaBadge" class="text-[11px] text-slate-500 font-mono">Ready</span>
+        </div>
+
+        <!-- Generated Text Box -->
+        <div id="outputBox" class="flex-1 bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm leading-relaxed text-slate-200 overflow-y-auto whitespace-pre-wrap">
+          Click "Run Inference" or select an interview topic to generate an answer powered by Jatin's 51M GPT model.
+        </div>
+
+        <!-- Retrieved Context Expander -->
+        <div id="contextCard" class="hidden bg-amber-950/20 border border-amber-900/40 rounded-xl p-3 text-xs text-amber-200/90 space-y-1.5">
+          <div class="font-semibold text-amber-400 flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+            <i class="fa-solid fa-file-lines"></i> Retrieved Resume Chunk
+          </div>
+          <p id="contextText" class="text-slate-300 text-[11px] leading-relaxed"></p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const BACKEND_URL = "https://gpt-2-from-scratch.onrender.com";
+
+    function setPrompt(text) {
+      document.getElementById('promptInput').value = text;
+    }
+
+    async function checkHealth() {
+      const statusBadge = document.getElementById('statusBadge');
+      const statusText = document.getElementById('statusText');
+      try {
+        const res = await fetch(`${BACKEND_URL}/health`);
+        const data = await res.json();
+        if (data.status === 'healthy') {
+          statusBadge.innerHTML = `
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span class="text-emerald-400 font-medium">Backend Live (Render CPU)</span>
+          `;
+        }
+      } catch (err) {
+        statusBadge.innerHTML = `
+          <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+          <span class="text-rose-400 font-medium">Backend Waking Up...</span>
+        `;
+      }
+    }
+
+    async function runInference() {
+      const prompt = document.getElementById('promptInput').value.trim();
+      const temp = parseFloat(document.getElementById('tempInput').value);
+      const topk = parseInt(document.getElementById('topkInput').value);
+      const maxTokens = parseInt(document.getElementById('tokensInput').value);
+      const btn = document.getElementById('submitBtn');
+      const outBox = document.getElementById('outputBox');
+      const metaBadge = document.getElementById('metaBadge');
+      const ctxCard = document.getElementById('contextCard');
+      const ctxText = document.getElementById('contextText');
+
+      if (!prompt) {
+        alert("Please enter a question!");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generating...`;
+      outBox.innerHTML = `<span class="text-slate-500 animate-pulse">Running inference on 51M model (CPU)...</span>`;
+      ctxCard.classList.add('hidden');
+
+      const t0 = performance.now();
+      try {
+        const res = await fetch(`${BACKEND_URL}/generate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: prompt,
+            temperature: temp,
+            top_k: topk,
+            max_new_tokens: maxTokens
+          })
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        const clientLatency = ((performance.now() - t0) / 1000).toFixed(2);
+
+        outBox.innerText = data.response || "No text generated.";
+        metaBadge.innerText = `${data.tokens_generated} tokens • ${data.latency_seconds}s (${(data.tokens_generated / Math.max(data.latency_seconds, 0.01)).toFixed(1)} tok/s)`;
+
+        if (data.retrieved_context) {
+          ctxText.innerText = data.retrieved_context;
+          ctxCard.classList.remove('hidden');
+        }
+
+      } catch (err) {
+        outBox.innerHTML = `<span class="text-rose-400">Failed to generate: ${err.message}. If the server was sleeping, please retry in a few seconds.</span>`;
+        metaBadge.innerText = "Error";
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Run Inference</span><i class="fa-solid fa-arrow-right text-xs"></i>`;
+      }
+    }
+
+    // Check backend health immediately on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      setPrompt('Tell me about your work on the Connect AI Gateway failover.');
+      checkHealth();
+    });
+  </script>
+</body>
+</html>

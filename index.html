@@ -88,19 +88,19 @@
             <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i> Suggestion Prompts (Click to test)
           </label>
           <div class="flex flex-wrap gap-2">
-            <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
+            <button onclick="setPrompt(this.innerText.trim(), 'rag')" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
               Who is jatin?
             </button>
-            <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
-              What is Jatin's current role and company?
+            <button onclick="setPrompt(this.innerText.trim(), 'pretrained')" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
+              One sunny day, Tim went to the playground with his shiny red ball.
             </button>
-            <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
+            <button onclick="setPrompt(this.innerText.trim(), 'rag')" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
               Tell me about your work on the Connect AI Gateway failover.
             </button>
-            <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
-              How does Jatin handle MCP file transfers with Azure Blob?
+            <button onclick="setPrompt(this.innerText.trim(), 'pretrained')" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
+              There was a little bird named Pip who was afraid to fly high into the big green tree.
             </button>
-            <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
+            <button onclick="setPrompt(this.innerText.trim(), 'rag')" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
               Where did Jatin study and what was his CGPA?
             </button>
           </div>
@@ -208,8 +208,11 @@
   <script>
     const BACKEND_URL = window.location.hostname.includes("vercel.app") ? "/api" : "";
 
-    function setPrompt(text) {
+    function setPrompt(text, mode) {
       document.getElementById("promptInput").value = text;
+      if (mode) {
+        document.getElementById("modelMode").value = mode;
+      }
       document.getElementById("promptInput").focus();
     }
 

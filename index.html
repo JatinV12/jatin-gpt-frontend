@@ -158,7 +158,7 @@
   </main>
 
   <script>
-    const BACKEND_URL = "https://gpt-2-from-scratch.onrender.com";
+    const BACKEND_URL = window.location.hostname.includes("vercel.app") ? "/api" : "http://3.24.35.137";
 
     function setPrompt(text) {
       document.getElementById('promptInput').value = text;

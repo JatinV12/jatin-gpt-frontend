@@ -1,6 +1,20 @@
 {
   "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/generate",
+      "destination": "http://3.24.35.137/generate"
+    },
+    {
+      "source": "/api/health",
+      "destination": "http://3.24.35.137/health"
+    }
+  ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "http://3.24.35.137/"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"

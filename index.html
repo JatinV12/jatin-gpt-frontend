@@ -31,9 +31,6 @@
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           AWS EC2 Live
         </span>
-        <a href="https://github.com/JatinV12/GPT-2-From-scratch" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
-          <i class="fa-brands fa-github"></i> Source
-        </a>
       </div>
     </div>
   </header>
@@ -53,16 +50,12 @@
             Trained on 474M TinyStories tokens with 8 transformer layers, 8 attention heads, and tied word embeddings. Serving with uncompressed FP32 weights (194.7 MB) on AWS EC2.
           </p>
         </div>
-        <div class="grid grid-cols-3 gap-3 font-mono text-center shrink-0">
-          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+        <div class="grid grid-cols-2 gap-3 font-mono text-center shrink-0">
+          <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 min-w-[90px]">
             <div class="text-lg font-bold text-indigo-400">51.05M</div>
             <div class="text-[10px] text-slate-400 uppercase">Params</div>
           </div>
-          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-            <div class="text-lg font-bold text-emerald-400">~1.6s</div>
-            <div class="text-[10px] text-slate-400 uppercase">Latency</div>
-          </div>
-          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+          <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 min-w-[90px]">
             <div class="text-lg font-bold text-violet-400">FP32</div>
             <div class="text-[10px] text-slate-400 uppercase">Precision</div>
           </div>
@@ -82,9 +75,9 @@
           </div>
           <div class="sm:w-72">
             <select id="modelMode" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium cursor-pointer">
-              <option value="rag" selected>⚡ RAG-Augmented (Resume Grounded)</option>
-              <option value="finetuned">🎯 Fine-Tuned (Direct QA Prompt)</option>
-              <option value="pretrained">📖 Pretrained Base (Story Completion)</option>
+              <option value="rag" selected>⚡ RAG-Augmented</option>
+              <option value="finetuned">🎯 Fine-Tuned</option>
+              <option value="pretrained">📖 Pretrained Base</option>
             </select>
           </div>
         </div>
@@ -96,16 +89,16 @@
           </label>
           <div class="flex flex-wrap gap-2">
             <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
+              Who is jatin?
+            </button>
+            <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
               What is Jatin's current role and company?
             </button>
             <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
-              Explain Jatin's AI Gateway failover architecture
+              Tell me about your work on the Connect AI Gateway failover.
             </button>
             <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
-              How did Jatin implement MCP file transfers with Azure Blob?
-            </button>
-            <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
-              What were the hyperparameters for pretraining this 51M GPT?
+              How does Jatin handle MCP file transfers with Azure Blob?
             </button>
             <button onclick="setPrompt(this.innerText)" class="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition text-left">
               Where did Jatin study and what was his CGPA?
@@ -128,7 +121,7 @@
               <i class="fa-solid fa-sliders text-indigo-400"></i> temp=0.1
             </span>
             <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-slate-950 border border-slate-800">
-              <i class="fa-solid fa-filter text-indigo-400"></i> top_k=3
+              <i class="fa-solid fa-filter text-indigo-400"></i> top_k=1
             </span>
           </div>
           <button id="runBtn" onclick="runInference()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/20 flex items-center gap-2 text-sm disabled:opacity-50">
@@ -167,6 +160,44 @@
         </div>
 
       </div>
+
+      <!-- Limitations & Research Context Section -->
+      <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6">
+        <div class="flex items-center gap-2 mb-2 text-amber-400 text-sm font-semibold">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Model Limitations & Research Scope</span>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed mb-4">
+          This model is an educational research project built and trained from scratch to demonstrate full-stack transformer pretraining and lexical RAG. Because it is a compact model rather than a commercial multi-billion parameter LLM, please keep the following architectural limitations in mind:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+          <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/60">
+            <span class="text-indigo-400 font-semibold block mb-1">1. Parameter Scale (51 Million Params)</span>
+            <span class="text-slate-400 font-sans leading-relaxed block">
+              Modern LLMs have 8 to 70 billion parameters. With 51M parameters, the model has limited internal memory capacity. Without context guidance, answers may exhibit grammatical variance or slight hallucination.
+            </span>
+          </div>
+          <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/60">
+            <span class="text-violet-400 font-semibold block mb-1">2. TinyStories Pretraining Prior</span>
+            <span class="text-slate-400 font-sans leading-relaxed block">
+              The base model was pretrained on 474M tokens of synthetic children's stories. When running in "Pretrained Base" mode without RAG, the model naturally completes sentences in simple narrative prose rather than technical discourse.
+            </span>
+          </div>
+          <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/60">
+            <span class="text-emerald-400 font-semibold block mb-1">3. Why RAG Mode Is Recommended</span>
+            <span class="text-slate-400 font-sans leading-relaxed block">
+              RAG injects verified factual resume excerpts directly into the prompt. This anchors the 51M attention heads on real facts, compensating for the small model capacity and ensuring factual answers.
+            </span>
+          </div>
+          <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/60">
+            <span class="text-amber-400 font-semibold block mb-1">4. BPE Sub-Word Boundaries</span>
+            <span class="text-slate-400 font-sans leading-relaxed block">
+              GPT-2 Byte-Pair Encoding splits rare proper nouns and technical terms into multiple subword tokens. Decoding applies a repetition penalty (1.25) and constrained greedy sampling to prevent stuttering.
+            </span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -224,8 +255,8 @@
             prompt: prompt,
             mode: mode,
             temperature: 0.1,
-            top_k: 3,
-            max_new_tokens: 35
+            top_k: 1,
+            max_new_tokens: 40
           })
         });
 
@@ -242,7 +273,7 @@
           outputModeBadge.innerText = "⚡ RAG Grounded";
           outputModeBadge.className = "text-xs font-mono font-semibold uppercase px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
         } else if (data.mode === "finetuned") {
-          outputModeBadge.innerText = "🎯 Direct QA";
+          outputModeBadge.innerText = "🎯 Fine-Tuned";
           outputModeBadge.className = "text-xs font-mono font-semibold uppercase px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30";
         } else {
           outputModeBadge.innerText = "📖 Base Pretrained";

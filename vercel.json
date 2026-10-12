@@ -9,15 +9,5 @@
       "source": "/api/health",
       "destination": "http://3.24.35.137/health"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "http://3.24.35.137/"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
   ]
 }

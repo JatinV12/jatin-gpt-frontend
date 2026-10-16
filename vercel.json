@@ -8,6 +8,10 @@
     {
       "source": "/api/health",
       "destination": "http://3.24.35.137/health"
+    },
+    {
+      "source": "/api/prompts",
+      "destination": "http://3.24.35.137/prompts"
     }
   ]
 }
